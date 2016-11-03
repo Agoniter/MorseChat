@@ -18,5 +18,83 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mEmail = (AutoCompleteTextView) findViewById(R.id.email);
+
+        mPassword = (EditText) findViewById(R.id.password);
+
+        Button mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: add login function onClick
+                // loginCheck();
+            }
+        });
+
+        Button mSignUpButton = (Button) findViewById(R.id.sign_up_button);
+        Intent signupIntent = new Intent(this, SignUpActivity.class);
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: add sign up action onClock
+            }
+        });
     }
+
+    /**
+     * Checks if the fields are filled in and then tries to login
+     */
+    private void loginCheck() {
+
+        String email = mEmail.getText().toString();
+        String password = mPassword.getText().toString();
+
+        View focusView = null;
+        boolean error = false;
+
+        if (!TextUtils.isEmpty(password) && isPasswordValid(password)) {
+            mPassword.setError(getString(R.string.error_invalid_password));
+            focusView = mPassword;
+            error = true;
+        }
+
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError(getString(R.string.error_field_required));
+            focusView = mEmail;
+            error = true;
+        }
+
+        if (!isEmailValid(email)) {
+            mEmail.setError(getString(R.string.error_invalid_email));
+            focusView = mEmail;
+            error = true;
+        }
+
+        if (error) {
+            focusView.requestFocus();
+        } else {
+            // Login attempt
+        }
+    }
+
+    /**
+     * Checks if email input contains @
+     * @param email
+     * @return true or false
+     */
+    private boolean isEmailValid(String email) {
+        return email.contains("@");
+    }
+
+    /**
+     * TODO: add checks for capitalization and numbers?
+     * Checks if password is longer than 4 characters
+     * @param password
+     * @return true or false
+     */
+    private boolean isPasswordValid(String password) {
+        return password.length() > 4;
+    }
+
 }
