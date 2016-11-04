@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: add login function onClick
-                // loginCheck();
+                loginCheck();
             }
         });
 
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         View focusView = null;
         boolean error = false;
 
-        if (!TextUtils.isEmpty(password) && isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPassword.setError(getString(R.string.error_invalid_password));
             focusView = mPassword;
             error = true;
@@ -75,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // Login attempt
+            // TODO: add connection to server
+            //Intent mainActivityIntent = new Intent(this, MainActivity.class);
+            //startActivity(mainActivityIntent);
         }
     }
 
