@@ -14,4 +14,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_retype_password">Retype Password</string>
+    <string name="error_password_mismatch">The passwords do not match</string>
 </resources>

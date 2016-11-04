@@ -21,11 +21,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <AutoCompleteTextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
                 android:id="@+id/email"
-                tools:text="@string/prompt_email" />
+                android:hint="@string/prompt_email" />
 
             <EditText
                 android:layout_width="match_parent"

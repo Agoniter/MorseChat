@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private AutoCompleteTextView mEmail;
+    private EditText mEmail;
     private EditText mPassword;
 
     @Override
@@ -19,7 +19,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEmail = (AutoCompleteTextView) findViewById(R.id.email);
+
+        mEmail = (EditText) findViewById(R.id.email);
 
         mPassword = (EditText) findViewById(R.id.password);
 
@@ -33,13 +34,21 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button mSignUpButton = (Button) findViewById(R.id.sign_up_button);
-        Intent signupIntent = new Intent(this, SignUpActivity.class);
+        final Intent signupIntent = new Intent(this, SignUpActivity.class);
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: add sign up action onClock
+                startActivity(signupIntent);
             }
         });
+    }
+
+    /**
+     * Override back button
+     */
+    @Override
+    public void onBackPressed() {
     }
 
     /**
@@ -53,11 +62,13 @@ public class LoginActivity extends AppCompatActivity {
         View focusView = null;
         boolean error = false;
 
-        if (TextUtils.isEmpty(password)) {
-            mPassword.setError(getString(R.string.error_invalid_password));
+        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+            mPassword.setError(getString(R.string.error_incorrect_password));
             focusView = mPassword;
             error = true;
         }
+
+
 
         if (TextUtils.isEmpty(email)) {
             mEmail.setError(getString(R.string.error_field_required));
@@ -76,8 +87,9 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Login attempt
             // TODO: add connection to server
+            // TODO: check to see if it's in the db
             //Intent mainActivityIntent = new Intent(this, MainActivity.class);
-            //startActivity(mainActivityIntent);
+            //startActivity(mainActivityIntent);o
         }
     }
 
@@ -91,13 +103,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * TODO: add checks for capitalization and numbers?
-     * Checks if password is longer than 4 characters
+     * Checks if password is 6 characters or longer
      * @param password
      * @return true or false
      */
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
 }
