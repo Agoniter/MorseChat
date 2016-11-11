@@ -17,4 +17,7 @@
     <string name="prompt_username">Username</string>
     <string name="prompt_retype_password">Retype Password</string>
     <string name="error_password_mismatch">The passwords do not match</string>
+    <string name="promt_dot">•</string>
+    <string name="promt_dash">-</string>
+    <string name="action_setting">Settings</string>
 </resources>

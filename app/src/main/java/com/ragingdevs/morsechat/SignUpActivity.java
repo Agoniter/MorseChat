@@ -1,5 +1,6 @@
 package com.ragingdevs.morsechat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,7 +13,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mUsername;
     private EditText mPassword;
-    private EditText mComfirmPassword;
+    private EditText mConfirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.reg_email);
         mUsername = (EditText) findViewById(R.id.reg_username);
         mPassword = (EditText) findViewById(R.id.reg_password);
-        mComfirmPassword = (EditText) findViewById(R.id.reg_confirm_password);
+        mConfirmPassword = (EditText) findViewById(R.id.reg_confirm_password);
 
         Button mSignUpButton = (Button) findViewById(R.id.registration_button);
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
         String email = mEmail.getText().toString();
         String username = mUsername.getText().toString();
         String password = mPassword.getText().toString();
-        String confirmPassword = mComfirmPassword.getText().toString();
+        String confirmPassword = mConfirmPassword.getText().toString();
 
         View focusView = null;
         boolean error = false;
@@ -72,8 +73,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(confirmPassword) || !comparePassword(password, confirmPassword)) {
-            mComfirmPassword.setError(getString(R.string.error_password_mismatch));
-            focusView = mComfirmPassword;
+            mConfirmPassword.setError(getString(R.string.error_password_mismatch));
+            focusView = mConfirmPassword;
             error = true;
         }
 
@@ -82,7 +83,8 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             // TODO: add server connection
 
-
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
         }
     }
 

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.textservice.TextInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         mEmail = (EditText) findViewById(R.id.email);
-
         mPassword = (EditText) findViewById(R.id.password);
 
         Button mLoginButton = (Button) findViewById(R.id.login_button);
