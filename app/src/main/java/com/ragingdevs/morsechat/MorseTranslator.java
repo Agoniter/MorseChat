@@ -30,9 +30,13 @@ public class MorseTranslator {
                     result.add(dashDuration);
                     break;
                 case ' ':
-                    result.add(charPause);
+                    if(morseChars[i+1] != ' ') {
+                        result.add(charPause);
+                    }
+                    else{
+                        result.add(wordPause);
+                    }
                     break;
-
 
 
             }
