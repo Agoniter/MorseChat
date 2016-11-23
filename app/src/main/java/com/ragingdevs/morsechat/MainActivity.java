@@ -26,8 +26,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // for testing purpose
                 Intent morseIntent = new Intent(MainActivity.this, MorseActivity.class);
                 startActivity(morseIntent);
+
+                // TODO: Go to contact list
             }
         });
 
@@ -36,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
             Intent loginIntent = new Intent(this, LoginActivity.class);
            // startActivity(loginIntent);
         }
-
-
-
 
     }
 

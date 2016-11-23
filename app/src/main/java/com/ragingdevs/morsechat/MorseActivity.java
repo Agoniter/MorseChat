@@ -5,32 +5,37 @@ import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MorseActivity extends AppCompatActivity {
 
-    int mDot = 200;
-    int mDash = 500;
-    int short_gap = 200;
-    int medium_gap = 500;
-    int long_gap = 1000;
-
     long lastDown;
-    long lastDuration;
+    long lastDownDuration;
+    long lastUp;
+    long lastUpDuration;
+    boolean firstTouch;
+
+    ArrayList<Long> morseMessage = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morse);
 
+        firstTouch = true;
+        lastUpDuration = 0;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final Vibrator mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
 
         Button mMorseButton = (Button) findViewById(R.id.morse_button);
         mMorseButton.setOnTouchListener(new View.OnTouchListener() {
@@ -39,38 +44,48 @@ public class MorseActivity extends AppCompatActivity {
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 
-                    mVibrator.vibrate(mDot);
-                }
-
-
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    lastDuration = System.currentTimeMillis() - lastDown;
-
-                    if (lastDuration < 201) {
-                        mVibrator.vibrate(mDot);
+                    if(!firstTouch) {
+                        lastUpDuration = System.currentTimeMillis() - lastUp;
                     }
+                    lastDown = System.currentTimeMillis();
 
-                    if (lastDuration > 200 && lastDuration < 501) {
-                        mVibrator.vibrate(mDash);
-                    }
+                    morseMessage.add(lastUpDuration);
 
-                    String tmpLastDown = String.valueOf(lastDown);
+                    // For testing
+                    //String tmpLastDown = String.valueOf(lastUpDuration);
                     //Toast.makeText(getApplicationContext(), tmpLastDown, Toast.LENGTH_LONG).show();
 
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    lastDown = System.currentTimeMillis();
 
+                    lastDownDuration = System.currentTimeMillis() - lastDown;
+                    firstTouch = false;
+                    lastUp = System.currentTimeMillis();
 
+                    morseMessage.add(lastDownDuration);
 
-                    String tmpLastDuration = String.valueOf(lastDuration);
-                    Toast.makeText(getApplicationContext(), tmpLastDuration, Toast.LENGTH_SHORT).show();
+                    // For testing
+                    //String tmpLastDuration = String.valueOf(lastDownDuration);
+                    //Toast.makeText(getApplicationContext(), tmpLastDuration, Toast.LENGTH_SHORT).show();
 
                 }
-
 
                 return false;
             }
         });
+
+        Button mSendButton = (Button) findViewById(R.id.send_message_button);
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // TODO: Send list
+
+                // For testing purpose
+                Log.d("Morse Message", morseMessage.toString());
+                morseMessage.clear();
+            }
+        });
+
     }
 
     @Override
