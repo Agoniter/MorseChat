@@ -8,6 +8,12 @@
     tools:context="com.ragingdevs.morsechat.MainActivity"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/message_list"></LinearLayout>
+
     <include layout="@layout/toolbar"/>
 
         <android.support.design.widget.FloatingActionButton
