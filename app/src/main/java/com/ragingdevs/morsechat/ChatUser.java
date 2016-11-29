@@ -7,14 +7,14 @@ import java.util.Date;
  * Created by alexfylling on 18.11.2016.
  */
 
-public class Contact {
+public class ChatUser {
 
     long id;
     String username;
     Date created;
     ArrayList<Message> messageList;
 
-    public Contact(long id, String username, Date created) {
+    public ChatUser(long id, String username, Date created) {
         this.id = id;
         this.username = username;
         this.created = created;
