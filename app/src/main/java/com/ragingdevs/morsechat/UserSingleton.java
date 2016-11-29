@@ -1,5 +1,7 @@
 package com.ragingdevs.morsechat;
 
+import java.util.ArrayList;
+
 /**
  * Created by hallv on 29.11.2016.
  */
@@ -9,8 +11,11 @@ public class UserSingleton {
 
     private String token;
 
+    private ArrayList<ChatUser> contactList;
+
     private UserSingleton(){
         token = "";
+        contactList = new ArrayList<>();
     }
 
     public static UserSingleton getInstance(){
@@ -38,4 +43,7 @@ public class UserSingleton {
         }
     }
 
+    public ArrayList<ChatUser> getContacts() {
+        return contactList;
+    }
 }
