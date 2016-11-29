@@ -14,9 +14,9 @@ import java.util.ArrayList;
  * Created by alexfylling on 27.11.2016.
  */
 
-public class ContactAdapter extends ArrayAdapter<Contact> {
+public class ContactAdapter extends ArrayAdapter<ChatUser> {
 
-    public ContactAdapter(Context context, ArrayList<Contact> contacts) {
+    public ContactAdapter(Context context, ArrayList<ChatUser> contacts) {
         super(context, 0, contacts);
     }
 
@@ -24,7 +24,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Contact contact = getItem(position);
+        ChatUser contact = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact, parent, false);

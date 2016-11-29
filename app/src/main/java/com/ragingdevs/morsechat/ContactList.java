@@ -8,17 +8,17 @@ import java.util.Date;
  */
 
 public class ContactList {
-    ArrayList<Contact> contacts;
+    ArrayList<ChatUser> contacts;
 
     public ContactList() {
         this.contacts = new ArrayList<>();
     }
 
     public void addContact(long id, String username, Date created) {
-        contacts.add(new Contact(id, username, created));
+        contacts.add(new ChatUser(id, username, created));
     }
 
-    public ArrayList<Contact> getContacts() {
+    public ArrayList<ChatUser> getContacts() {
         return contacts;
     }
 }

@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class MessageAdapter extends ArrayAdapter {
 
-    Contact mTextContext;
+    ChatUser mTextContext;
 
-    public MessageAdapter(Context context, ArrayList<Message> messages, Contact textContact) {
+    public MessageAdapter(Context context, ArrayList<Message> messages, ChatUser textContact) {
         super(context, 0, messages);
         this.mTextContext = textContact;
     }
