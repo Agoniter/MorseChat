@@ -13,12 +13,12 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-
+    private ServerCom serverCom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent testIntent = new Intent(MainActivity.this,LoginActivity.class);
@@ -63,5 +63,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private void retrieveMessages(){
+        serverCom
     }
 }
