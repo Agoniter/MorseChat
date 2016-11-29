@@ -93,7 +93,7 @@ public class MorseActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String response = new String(responseBody, StandardCharsets.UTF_8);
-                        Log.d("success", response);
+                        Log.d("usrchk", response);
                     }
 
                     @Override

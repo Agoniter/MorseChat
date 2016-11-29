@@ -10,14 +10,12 @@ import java.util.Date;
 public class ChatUser {
 
     long id;
-    String username;
-    Date created;
+    String username,token;
     ArrayList<Message> messageList;
 
-    public ChatUser(long id, String username, Date created) {
+    public ChatUser(long id, String username) {
         this.id = id;
         this.username = username;
-        this.created = created;
         this.messageList = new ArrayList<>();
     }
 
@@ -41,4 +39,11 @@ public class ChatUser {
         return messageList.get(messageList.size()-1).getMessage();
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

@@ -8,14 +8,13 @@ import java.util.ArrayList;
 public class UserSingleton {
 
     private static UserSingleton mInstance = null;
-
-    private String token;
-
+    private static ChatUser user;
     private ArrayList<ChatUser> contactList;
 
+
     private UserSingleton(){
-        token = "";
         contactList = new ArrayList<>();
+        user = null;
     }
 
     public static UserSingleton getInstance(){
@@ -26,24 +25,26 @@ public class UserSingleton {
         return mInstance;
     }
 
-    public String getToken(){
-        return this.token;
-    }
-
-    public void setToken(String value){
-        token = value;
-    }
-
     public boolean isLoggedIn(){
-        if(token.equals("")){
-            return false;
+        if(user != null) {
+            if (user.getToken().equals("")) {
+                return false;
+            } else {
+                return true;
+            }
         }
-        else{
-            return true;
-        }
+        return false;
     }
 
     public ArrayList<ChatUser> getContacts() {
         return contactList;
+    }
+
+    public ChatUser getUser() {
+        return user;
+    }
+
+    public void setUser(ChatUser user) {
+        this.user = user;
     }
 }
