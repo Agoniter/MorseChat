@@ -4,9 +4,20 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import java.nio.charset.StandardCharsets;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -14,12 +25,12 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText mUsername;
     private EditText mPassword;
     private EditText mConfirmPassword;
-
+    private ServerCom serverCom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        serverCom = new ServerCom();
         mEmail = (EditText) findViewById(R.id.reg_email);
         mUsername = (EditText) findViewById(R.id.reg_username);
         mPassword = (EditText) findViewById(R.id.reg_password);
@@ -82,7 +93,24 @@ public class SignUpActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // TODO: add server connection
+            RequestParams params = new RequestParams();
+            params.put("email",email);
+            params.put("username",username);
+            params.put("password",password);
+            serverCom.post("user/create",params, new AsyncHttpResponseHandler(){
 
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String response = new String(responseBody, StandardCharsets.UTF_8);
+                    Log.d("success", "signup success:" + response);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    error.printStackTrace();
+
+                }
+            });
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }

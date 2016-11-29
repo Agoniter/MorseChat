@@ -4,24 +4,31 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.textservice.TextInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import java.nio.charset.StandardCharsets;
+
+import cz.msebera.android.httpclient.Header;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText mEmail;
+    private EditText mUser;
     private EditText mPassword;
-
+    private ServerCom serverCom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        serverCom = new ServerCom();
 
-
-        mEmail = (EditText) findViewById(R.id.email);
+        mUser = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
 
         Button mLoginButton = (Button) findViewById(R.id.login_button);
@@ -56,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void loginCheck() {
 
-        String email = mEmail.getText().toString();
+        String user = mUser.getText().toString();
         String password = mPassword.getText().toString();
 
         View focusView = null;
@@ -70,26 +77,33 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        if (TextUtils.isEmpty(email)) {
-            mEmail.setError(getString(R.string.error_field_required));
-            focusView = mEmail;
-            error = true;
-        }
-
-        if (!isEmailValid(email)) {
-            mEmail.setError(getString(R.string.error_invalid_email));
-            focusView = mEmail;
+        if (TextUtils.isEmpty(user)) {
+            mUser.setError(getString(R.string.error_field_required));
+            focusView = mUser;
             error = true;
         }
 
         if (error) {
             focusView.requestFocus();
         } else {
-            // Login attempt
-            // TODO: add connection to server
-            // TODO: check to see if it's in the db
-            //Intent mainActivityIntent = new Intent(this, MainActivity.class);
-            //startActivity(mainActivityIntent);o
+            RequestParams params = new RequestParams();
+            params.put("username", user);
+            params.put("password", password);
+            serverCom.post("user/login", params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String response = new String(responseBody, StandardCharsets.UTF_8);
+                    Log.d("success", "login success:" + response);
+                    //Intent mainActivityIntent = new Intent(this, MainActivity.class);
+                    //startActivity(mainActivityIntent);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
+
         }
     }
 
