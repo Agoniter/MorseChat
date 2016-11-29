@@ -94,13 +94,15 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String response = new String(responseBody, StandardCharsets.UTF_8);
                     Log.d("success", "login success:" + response);
-                    //Intent mainActivityIntent = new Intent(this, MainActivity.class);
-                    //startActivity(mainActivityIntent);
+                    UserSingleton.getInstance().setToken(response);
+                    serverCom.setAuthHead(UserSingleton.getInstance().getToken());
+                    Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(mainActivityIntent);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                    error.printStackTrace();
                 }
             });
 

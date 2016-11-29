@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent testIntent = new Intent(MainActivity.this,LoginActivity.class);
-        startActivity(testIntent);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Check if a user is logged in
-        if (!MyService.getServices(this).isLoggedIn()) {
+        if (!UserSingleton.getInstance().isLoggedIn()) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
-           // startActivity(loginIntent);
+            startActivity(loginIntent);
         }
 
     }

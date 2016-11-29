@@ -24,7 +24,9 @@ public class ServerCom {
 
     private static String getAbsoluteUrl(String relativeUrl) {
         return base_url + relativeUrl;
+    }
 
-
+    public void setAuthHead(String token){
+        client.addHeader("Authorization",token);
     }
 }

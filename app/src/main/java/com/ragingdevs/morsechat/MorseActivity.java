@@ -1,6 +1,7 @@
 package com.ragingdevs.morsechat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MorseActivity extends AppCompatActivity {
 
@@ -21,6 +28,7 @@ public class MorseActivity extends AppCompatActivity {
     long lastUp;
     long lastUpDuration;
     boolean firstTouch;
+    ServerCom serverCom;
 
     ArrayList<Long> morseMessage = new ArrayList<>();
 
@@ -29,6 +37,7 @@ public class MorseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morse);
 
+        serverCom = new ServerCom();
         firstTouch = true;
         lastUpDuration = 0;
 
@@ -79,10 +88,22 @@ public class MorseActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // TODO: Send list
+                RequestParams params = new RequestParams();
+                serverCom.get("debug/checktoken",params , new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String response = new String(responseBody, StandardCharsets.UTF_8);
+                        Log.d("success", response);
+                    }
 
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        error.printStackTrace();
+                    }
+                });
                 // For testing purpose
-                Log.d("Morse Message", morseMessage.toString());
-                morseMessage.clear();
+                //Log.d("Morse Message", morseMessage.toString());
+                //morseMessage.clear();
             }
         });
 
