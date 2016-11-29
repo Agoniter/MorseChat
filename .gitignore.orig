@@ -1,0 +1,20 @@
+*.iml
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.idea/
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+<<<<<<< HEAD
+/.gradle/2.14.1/taskArtifacts
+=======
+>>>>>>> origin/Alex
+.gradle/2.14.1/taskArtifacts/cache.properties
+.gradle/2.14.1/taskArtifacts/cache.properties.lock
+.gradle/2.14.1/taskArtifacts/fileHashes.bin
+.gradle/2.14.1/taskArtifacts/fileSnapshots.bin
+.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin
+.gradle/2.14.1/taskArtifacts/taskArtifacts.bin
