@@ -30,7 +30,8 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MorseActivity"></activity>
+        <activity android:name=".MorseActivity" />
+        <activity android:name=".Friends"></activity>
     </application>
 
 </manifest>
