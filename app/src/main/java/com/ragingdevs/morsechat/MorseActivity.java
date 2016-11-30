@@ -13,8 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ public class MorseActivity extends AppCompatActivity {
     long lastUpDuration;
     boolean firstTouch;
     ServerCom serverCom;
-
+    ArrayList<Long> listOfRecipients = new ArrayList<>();
     ArrayList<Long> morseMessage = new ArrayList<>();
 
     @Override
@@ -89,19 +93,27 @@ public class MorseActivity extends AppCompatActivity {
                 morseMessage.remove(0);
                 // TODO: Send list
                 RequestParams params = new RequestParams();
-                serverCom.get("debug/checktoken",params , new AsyncHttpResponseHandler() {
+                params.put("senderid", UserSingleton.getInstance().getUser().getId());
+                Gson gson = new GsonBuilder().create();
+                String message = gson.toJson(morseMessage);
+                params.put("message", message);
+                String recipients = gson.toJson(listOfRecipients);
+                params.put("recipients", recipients);
+
+                serverCom.post("message/sendmessage", params, new AsyncHttpResponseHandler(){
+
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        String response = new String(responseBody, StandardCharsets.UTF_8);
-                        Log.d("usrchk", response);
+                        Toast.makeText(MorseActivity.this,"Message sent", Toast.LENGTH_LONG);
+                        morseMessage.clear();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        error.printStackTrace();
+                        Toast.makeText(MorseActivity.this,"Message not sent, please try again", Toast.LENGTH_LONG);
                     }
                 });
-                // For testing purpose
+                    // For testing purpose
                 //Log.d("Morse Message", morseMessage.toString());
                 //morseMessage.clear();
             }
