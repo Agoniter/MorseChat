@@ -10,10 +10,11 @@ public class UserSingleton {
     private static UserSingleton mInstance = null;
     private static ChatUser user;
     private ArrayList<ChatUser> contactList;
-
+    private ArrayList<Message> messages;
 
     private UserSingleton(){
         contactList = new ArrayList<>();
+        messages = new ArrayList<>();
         user = null;
     }
 
@@ -46,5 +47,13 @@ public class UserSingleton {
 
     public void setUser(ChatUser user) {
         this.user = user;
+    }
+
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
     }
 }

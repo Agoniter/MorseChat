@@ -1,5 +1,6 @@
 package com.ragingdevs.morsechat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * Created by alexfylling on 18.11.2016.
  */
 
-public class ChatUser {
+public class ChatUser implements Serializable{
 
     long id;
     String username,token;
@@ -34,11 +35,7 @@ public class ChatUser {
     public ArrayList<Message> getMessageList() {
         return messageList;
     }
-
-    public String getLastMessage(){
-        return messageList.get(messageList.size()-1).getMessage();
-    }
-
+    
     public String getToken() {
         return token;
     }
