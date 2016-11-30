@@ -1,5 +1,7 @@
 package com.ragingdevs.morsechat;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -58,5 +60,12 @@ public class UserSingleton {
 
     public void setMessages(ArrayList<Message> messages) {
         this.messages = messages;
+        Log.d("usrsingl", messages.toString());
+    }
+
+    public void clearMe(){
+        messages = new ArrayList<>();
+        user = null;
+        contactList = new ArrayList<>();
     }
 }

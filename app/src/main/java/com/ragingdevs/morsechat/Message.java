@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class Message implements Serializable {
 
     ArrayList<Long> message;
-    long sender, recipient;
+     ChatUser sender, recipient;
 
-    public Message(ArrayList<Long> message,long recipient, long sender){
+    public Message(ArrayList<Long> message,ChatUser recipient, ChatUser sender){
             this.message = message;
             this.recipient = recipient;
             this.sender = sender;
@@ -30,19 +30,19 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public long getSender() {
+    public ChatUser getSender() {
         return sender;
     }
 
-    public void setSender(long sender) {
+    public void setSender(ChatUser sender) {
         this.sender = sender;
     }
 
-    public long getRecipient() {
+    public ChatUser getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(long recipient) {
+    public void setRecipient(ChatUser recipient) {
         this.recipient = recipient;
     }
 

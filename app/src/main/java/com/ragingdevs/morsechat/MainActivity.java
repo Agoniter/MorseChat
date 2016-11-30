@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ServerCom serverCom;
     private MessageAdapter msgAdpt;
+    ListView messageLV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,16 +45,31 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            msgAdpt = new MessageAdapter(this, UserSingleton.getInstance().getMessages());
+            //TEST TEST TEST
+           /* ArrayList<Message> testMsgs = new ArrayList<>();
+            ArrayList<Long> testMsg = new ArrayList<>();
+            testMsg.add(200L);
+            testMsg.add(100L);
+            testMsg.add(100L);
+            testMsg.add(100L);
+            testMsg.add(200L);
+
+            testMsgs.add(new Message(testMsg, UserSingleton.getInstance().getUser(), UserSingleton.getInstance().getUser()));
+            testMsgs.add(new Message(testMsg, UserSingleton.getInstance().getUser(), UserSingleton.getInstance().getUser()));
+            testMsgs.add(new Message(testMsg, UserSingleton.getInstance().getUser(), UserSingleton.getInstance().getUser()));*/
+            //TEST TEST TEST
+
+            //msgAdpt = new MessageAdapter(this, UserSingleton.getInstance().getMessages());
             getUsers();
             retrieveMessages();
+           // messageLV = (ListView) findViewById(R.id.msglv);
+           // messageLV.setAdapter(msgAdpt);
         }
         serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        ListView messageLV = (ListView) findViewById(R.id.msglv);
+       // ListView messageLV = (ListView) findViewById(R.id.msglv);
+       // messageLV.setAdapter(msgAdpt);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Go to contact list
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(msgAdpt != null){
+            retrieveMessages();
+            msgAdpt.notifyDataSetChanged();
+        }
+
     }
 
 
@@ -94,33 +121,45 @@ public class MainActivity extends AppCompatActivity {
     private void retrieveMessages(){
         RequestParams params = new RequestParams();
         params.put("recipientid", UserSingleton.getInstance().getUser().getId());
+        Log.d("thisuserid", "" + UserSingleton.getInstance().getUser().getId() );
         serverCom.get("message/messages",params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                ArrayList<Message> msgs = new ArrayList<Message>();
                 Gson gson = new Gson();
-               /* ArrayList<JSONObject> tmp = new ArrayList<>();
-                for(int i = 0; i < response.length(); i++){
+                for(int i=0; i< response.length(); i++){
                     try {
-                        tmp.add((JSONObject)response.get(i));
+                        JSONObject obj = response.getJSONObject(i);
+                        Long senderid = obj.getLong("sender");
+                        Log.d("sndr", "" + senderid);
+                        Log.d("cntcs", "" + UserSingleton.getInstance().getUser().getId());
+                        ChatUser sender = null;
+                        for(ChatUser c : UserSingleton.getInstance().getContacts()){
+                                    if(c.getId() == senderid) {
+                                        sender = c;
+                                    }
+                        }
+                        //Log.d("Sender", sender.getUsername());
+                        Long[] message = gson.fromJson(obj.getString("message"),Long[].class);
+                        List<Long>  msg = Arrays.asList(message);
+                        ArrayList<Long> mMessage = new ArrayList<>();
+                        mMessage.addAll(msg);
+                        Log.d("msg: ", msg.toString());
+                     if(sender != null) {
+                         msgs.add(new Message(mMessage, UserSingleton.getInstance().getUser(), sender));
+                     }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Log.d("message","" + tmp.get(0));
-
-                for(JSONObject j : tmp){
-                    messages.add(gson.fromJson(j.toString(), Message.class));
-                }*/
-                Log.d("rsp", response.toString());
-                Message[] messages = gson.fromJson(response.toString(), Message[].class);
-                ArrayList<Message> msgs = new ArrayList<>();
-                for(Message m : messages){
-                    msgs.add(m);
-                }
-                Log.d("msgs", msgs.toString());
-                Log.d("msgRetr", "Messages retreived successfully");
                 UserSingleton.getInstance().setMessages(msgs);
+                Log.d("notifyMsgAdpt", "Notifying dataset changed");
+                    msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
+                messageLV = (ListView) findViewById(R.id.msglv);
+                messageLV.setAdapter(msgAdpt);
                 msgAdpt.notifyDataSetChanged();
+                Log.d("msgAdpt", "count: " + msgAdpt.getCount());
             }
         }
         );

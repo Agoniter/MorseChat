@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {
+                       // UserSingleton.getInstance().clearMe();
                         Log.d("login", response.toString());
                         String username = response.getString("username");
                         String token = response.getString("token");
