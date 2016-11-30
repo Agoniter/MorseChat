@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }
-
     }
 
 
@@ -89,10 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 for(Message m : messages){
                     msgs.add(m);
                 }
-
-
+                UserSingleton.getInstance().setMessages(msgs);
             }
-
         }
         );
     }

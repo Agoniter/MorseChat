@@ -16,11 +16,10 @@ import java.util.ArrayList;
 
 public class MessageAdapter extends ArrayAdapter {
 
-    ChatUser mTextContext;
 
-    public MessageAdapter(Context context, ArrayList<Message> messages, ChatUser textContact) {
+    public MessageAdapter(Context context, ArrayList<Message> messages) {
         super(context, 0, messages);
-        this.mTextContext = textContact;
+
     }
 
     @NonNull
@@ -32,10 +31,8 @@ public class MessageAdapter extends ArrayAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message, parent, false);
         }
-
-        TextView messageInList = (TextView) convertView.findViewById(R.id.message_in_list);
+        ChatUser mTextContext = message.getSender();
         TextView contact = (TextView) convertView.findViewById(R.id.contact);
-        messageInList.setText(message.getMessage());
         contact.setText(mTextContext.getUsername());
 
         return convertView;
