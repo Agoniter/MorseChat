@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class MessageContainer implements Serializable {
     ArrayList<Long> recipients;
     ArrayList<Long> message;
+    Long sender;
 
     public MessageContainer(){
     }
@@ -30,6 +31,11 @@ public class MessageContainer implements Serializable {
         this.message = message;
     }
 
+    public Long getSender() {
+        return sender;
+    }
 
-
+    public void setSender(Long sender) {
+        this.sender = sender;
+    }
 }

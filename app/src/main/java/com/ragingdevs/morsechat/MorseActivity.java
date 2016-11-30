@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class MorseActivity extends AppCompatActivity {
 
@@ -96,16 +97,15 @@ public class MorseActivity extends AppCompatActivity {
                 morseMessage.remove(0);
                 // TODO: Send list
                 RequestParams params = new RequestParams();
-                params.put("senderid", UserSingleton.getInstance().getUser().getId());
                 Gson gson = new Gson();
-                String message = gson.toJson(morseMessage);
-                Log.d("sendmsg",message);
-                params.put("message", message);
-                String recipients = gson.toJson(listOfRecipients);
-                Log.d("sendmsg", recipients);
-                params.put("recipients", recipients);
+                MessageContainer msgCont = new MessageContainer();
+                msgCont.setMessage(morseMessage);
+                msgCont.setRecipients(listOfRecipients);
+                msgCont.setSender(UserSingleton.getInstance().getUser().getId());
+                String json = gson.toJson(msgCont);
+                StringEntity entity = new StringEntity(json, "UTF-8");
 
-                serverCom.post("message/sendmessage", params, new AsyncHttpResponseHandler(){
+                serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler(){
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

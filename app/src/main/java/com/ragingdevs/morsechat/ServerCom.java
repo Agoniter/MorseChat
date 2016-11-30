@@ -1,8 +1,11 @@
 package com.ragingdevs.morsechat;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.loopj.android.http.*;
+
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 
 /**
@@ -20,6 +23,10 @@ public class ServerCom {
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         Log.d("POST: ", "URL ->" + getAbsoluteUrl(url));
         client.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void post(Context context, String url, StringEntity entity, AsyncHttpResponseHandler responseHandler){
+        client.post(context, getAbsoluteUrl(url), entity, "application/json", responseHandler);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
