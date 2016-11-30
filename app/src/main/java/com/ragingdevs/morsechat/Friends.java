@@ -1,20 +1,23 @@
 package com.ragingdevs.morsechat;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 
-public class Friends extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+import java.util.ArrayList;
 
-    private Spinner dropDownSearchList;
+
+public class Friends extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    ContactAdapter contactAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +27,36 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dropDownSearchList = (Spinner) findViewById(R.id.spinner);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-
-
-
-        ListView friendList = (ListView) findViewById(R.id.friendlist);
-        ContactAdapter contactAdapter = new ContactAdapter(this, UserSingleton.getInstance().getContacts());
+        final ListView friendList = (ListView) findViewById(R.id.friendlist);
+        contactAdapter = new ContactAdapter(this, UserSingleton.getInstance().getContacts());
         friendList.setAdapter(contactAdapter);
+
+        friendList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        friendList.setItemsCanFocus(false);
+
+        friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                contactAdapter.getItem(i).toggleSelect();
+
+            }
+        });
+
+        FloatingActionButton fabSendTo = (FloatingActionButton) findViewById(R.id.send_to_fab);
+        fabSendTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<Long> selected = new ArrayList<>();
+                for(ChatUser c: UserSingleton.getInstance().getContacts()){
+                    if (c.isSelected()){
+                        selected.add(c.getId());
+                    }
+                }
+                Intent intent = new Intent(Friends.this,MorseActivity.class);
+                intent.putExtra("selected", selected);
+                startActivity(intent);
+            }
+        });
 
         final EditText searchFriend = (EditText) findViewById(R.id.search_friend);
         Button addFriendButton = (Button) findViewById(R.id.add_friend_button);
@@ -40,9 +65,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
             public void onClick(View view) {
                 // TODO: 29.11.2016 search friend -> add to list
 
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                dropDownSearchList.setAdapter(adapter);
-                dropDownSearchList.setOnItemSelectedListener(Friends.this);
+
             }
         });
 
@@ -52,7 +75,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

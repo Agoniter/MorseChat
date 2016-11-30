@@ -22,6 +22,8 @@ import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -47,8 +49,9 @@ public class MorseActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        Intent intent = getIntent();
+        listOfRecipients = (ArrayList) intent.getExtras().getSerializable("selected");
+        Log.d("Liståå ", listOfRecipients.toString());
 
         Button mMorseButton = (Button) findViewById(R.id.morse_button);
         mMorseButton.setOnTouchListener(new View.OnTouchListener() {
@@ -94,10 +97,12 @@ public class MorseActivity extends AppCompatActivity {
                 // TODO: Send list
                 RequestParams params = new RequestParams();
                 params.put("senderid", UserSingleton.getInstance().getUser().getId());
-                Gson gson = new GsonBuilder().create();
+                Gson gson = new Gson();
                 String message = gson.toJson(morseMessage);
+                Log.d("sendmsg",message);
                 params.put("message", message);
                 String recipients = gson.toJson(listOfRecipients);
+                Log.d("sendmsg", recipients);
                 params.put("recipients", recipients);
 
                 serverCom.post("message/sendmessage", params, new AsyncHttpResponseHandler(){
@@ -111,6 +116,7 @@ public class MorseActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Toast.makeText(MorseActivity.this,"Message not sent, please try again", Toast.LENGTH_LONG);
+                        error.printStackTrace();
                     }
                 });
                     // For testing purpose

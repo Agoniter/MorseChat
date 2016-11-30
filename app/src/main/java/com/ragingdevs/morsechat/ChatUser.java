@@ -10,14 +10,16 @@ import java.util.Date;
 
 public class ChatUser implements Serializable{
 
-    long id;
+    Long id;
     String username,token;
     ArrayList<Message> messageList;
+    boolean selected;
 
     public ChatUser(long id, String username) {
         this.id = id;
         this.username = username;
         this.messageList = new ArrayList<>();
+        selected = false;
     }
 
     public String getUsername() {
@@ -28,7 +30,7 @@ public class ChatUser implements Serializable{
         this.username = username;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -42,5 +44,16 @@ public class ChatUser implements Serializable{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+    public void setSelected(boolean checked) {
+        selected = checked;
+    }
+
+    public void toggleSelect(){
+        selected = !selected;
     }
 }

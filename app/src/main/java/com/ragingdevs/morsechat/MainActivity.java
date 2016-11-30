@@ -58,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent friendsListIntent = new Intent(MainActivity.this, Friends.class);
+                startActivity(friendsListIntent);
+
                 // for testing purpose
-                Intent morseIntent = new Intent(MainActivity.this, MorseActivity.class);
-                startActivity(morseIntent);
+                //Intent morseIntent = new Intent(MainActivity.this, MorseActivity.class);
+                //startActivity(morseIntent);
 
                 // TODO: Go to contact list
             }
