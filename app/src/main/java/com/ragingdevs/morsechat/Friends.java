@@ -24,7 +24,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dropDownSearchList = (Spinner) findViewById(R.id.spinner);
+        //dropDownSearchList = (Spinner) findViewById(R.id.spinner);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
 
 

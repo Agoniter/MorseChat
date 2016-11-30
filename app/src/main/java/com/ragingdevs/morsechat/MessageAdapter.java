@@ -2,6 +2,7 @@ package com.ragingdevs.morsechat;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,9 @@ public class MessageAdapter extends ArrayAdapter {
 
     public MessageAdapter(Context context, ArrayList<Message> messages) {
         super(context, 0, messages);
-
+        Log.d("MsgAdpt", messages.toString());
     }
 
-    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -31,9 +31,10 @@ public class MessageAdapter extends ArrayAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message, parent, false);
         }
-        //ChatUser mTextContext = message.getSender();
+        ChatUser mTextContext = message.getSender();
+        Log.d("mesgadp sender", mTextContext.getUsername());
         TextView contact = (TextView) convertView.findViewById(R.id.contact);
-        //contact.setText(mTextContext.getUsername());
+        contact.setText(mTextContext.getUsername());
 
         return convertView;
     }
