@@ -31,9 +31,9 @@ public class MessageAdapter extends ArrayAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message, parent, false);
         }
-        ChatUser mTextContext = message.getSender();
+        //ChatUser mTextContext = message.getSender();
         TextView contact = (TextView) convertView.findViewById(R.id.contact);
-        contact.setText(mTextContext.getUsername());
+        //contact.setText(mTextContext.getUsername());
 
         return convertView;
     }

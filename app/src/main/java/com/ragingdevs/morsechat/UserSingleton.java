@@ -40,6 +40,9 @@ public class UserSingleton {
     public ArrayList<ChatUser> getContacts() {
         return contactList;
     }
+    public void setChatUsers(ArrayList<ChatUser> newList){
+        contactList = newList;
+    }
 
     public ChatUser getUser() {
         return user;
