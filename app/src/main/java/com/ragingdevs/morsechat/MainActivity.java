@@ -6,9 +6,23 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Intent testIntent = new Intent(MainActivity.this,LoginActivity.class);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +78,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     private void retrieveMessages(){
-        //serverCom
+        RequestParams params = new RequestParams();
+        params.put("recipientid", UserSingleton.getInstance().getUser().getId());
+        serverCom.get("message/messages",params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Gson gson = new Gson();
+                Message[] messages = gson.fromJson(response.toString(), Message[].class);
+                ArrayList<Message> msgs = new ArrayList<>();
+                for(Message m : messages){
+                    msgs.add(m);
+                }
+
+
+            }
+
+        }
+        );
     }
 }

@@ -14,8 +14,8 @@ public class ContactList {
         this.contacts = new ArrayList<>();
     }
 
-    public void addContact(long id, String username, Date created) {
-        contacts.add(new ChatUser(id, username, created));
+    public void addContact(long id, String username) {
+        contacts.add(new ChatUser(id, username));
     }
 
     public ArrayList<ChatUser> getContacts() {

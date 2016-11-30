@@ -13,6 +13,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
@@ -89,21 +92,26 @@ public class LoginActivity extends AppCompatActivity {
             RequestParams params = new RequestParams();
             params.put("username", user);
             params.put("password", password);
-            serverCom.post("user/login", params, new AsyncHttpResponseHandler() {
+            serverCom.post("user/login", params, new JsonHttpResponseHandler(
+            ){
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    String response = new String(responseBody, StandardCharsets.UTF_8);
-                    Log.d("success", "login success:" + response);
-                    UserSingleton.getInstance().setToken(response);
-                    serverCom.setAuthHead(UserSingleton.getInstance().getToken());
-                    Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(mainActivityIntent);
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        String username = response.getString("username");
+                        String token = response.getString("token");
+                        Long id = response.getLong("id");
+                        ChatUser owner = new ChatUser(id,username);
+                        owner.setToken(token);
+                        UserSingleton.getInstance().setUser(owner);
+                        serverCom.setAuthHead(token);
+                        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(mainActivityIntent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    error.printStackTrace();
-                }
             });
 
         }
