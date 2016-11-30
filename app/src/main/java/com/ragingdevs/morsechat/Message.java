@@ -1,5 +1,9 @@
 package com.ragingdevs.morsechat;
 
+import android.content.Context;
+import android.os.Vibrator;
+import android.support.v4.content.res.TypedArrayUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -40,6 +44,17 @@ public class Message implements Serializable {
 
     public void setRecipient(ChatUser recipient) {
         this.recipient = recipient;
+    }
+
+    public void play(Context context){
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        Long[] tmp = (Long[])message.toArray();
+        long[] pattern = new long[message.size()];
+
+        for (int i = 0; i < message.size();i++){
+            pattern[i] = tmp[i];
+        }
+        v.vibrate(pattern, -1);
     }
 
 }

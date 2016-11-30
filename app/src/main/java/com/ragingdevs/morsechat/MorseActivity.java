@@ -86,7 +86,7 @@ public class MorseActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                morseMessage.remove(0);
                 // TODO: Send list
                 RequestParams params = new RequestParams();
                 serverCom.get("debug/checktoken",params , new AsyncHttpResponseHandler() {
