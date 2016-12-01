@@ -12,11 +12,12 @@ import java.util.ArrayList;
  */
 
 public class Message implements Serializable {
-
-    ArrayList<Long> message;
+     Long id;
+     ArrayList<Long> message;
      ChatUser sender, recipient;
 
-    public Message(ArrayList<Long> message,ChatUser recipient, ChatUser sender){
+    public Message(ArrayList<Long> message,ChatUser recipient, ChatUser sender, Long senderid){
+            this.id = senderid;
             this.message = message;
             this.recipient = recipient;
             this.sender = sender;
@@ -44,6 +45,14 @@ public class Message implements Serializable {
 
     public void setRecipient(ChatUser recipient) {
         this.recipient = recipient;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void play(Context context){
