@@ -3,6 +3,7 @@ package com.ragingdevs.morsechat;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,11 @@ public class LoginActivity extends AppCompatActivity {
 
         mUser = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        setTitle("MorseChat - Login");
 
         Button mLoginButton = (Button) findViewById(R.id.login_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
