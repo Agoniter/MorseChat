@@ -94,31 +94,33 @@ public class MorseActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                morseMessage.remove(0);
-                // TODO: Send list
-                RequestParams params = new RequestParams();
-                Gson gson = new Gson();
-                MessageContainer msgCont = new MessageContainer();
-                msgCont.setMessage(morseMessage);
-                msgCont.setRecipients(listOfRecipients);
-                msgCont.setSender(UserSingleton.getInstance().getUser().getId());
-                String json = gson.toJson(msgCont);
-                StringEntity entity = new StringEntity(json, "UTF-8");
+                if(!morseMessage.isEmpty()) {
+                    morseMessage.remove(0);
+                    // TODO: Send list
+                    RequestParams params = new RequestParams();
+                    Gson gson = new Gson();
+                    MessageContainer msgCont = new MessageContainer();
+                    msgCont.setMessage(morseMessage);
+                    msgCont.setRecipients(listOfRecipients);
+                    msgCont.setSender(UserSingleton.getInstance().getUser().getId());
+                    String json = gson.toJson(msgCont);
+                    StringEntity entity = new StringEntity(json, "UTF-8");
 
-                serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler(){
+                    serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler() {
 
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Toast.makeText(MorseActivity.this,"Message sent", Toast.LENGTH_LONG);
-                        morseMessage.clear();
-                    }
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Toast.makeText(MorseActivity.this, "Message sent", Toast.LENGTH_LONG);
+                            morseMessage.clear();
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(MorseActivity.this,"Message not sent, please try again", Toast.LENGTH_LONG);
-                        error.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(MorseActivity.this, "Message not sent, please try again", Toast.LENGTH_LONG);
+                            error.printStackTrace();
+                        }
+                    });
+                }
                     // For testing purpose
                 //Log.d("Morse Message", morseMessage.toString());
                 //morseMessage.clear();
