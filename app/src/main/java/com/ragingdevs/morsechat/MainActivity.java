@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Message mesg = (Message) msgAdpt.getItem(position);
-                mesg.play(MainActivity.this);
+                //mesg.play(MainActivity.this);
+                
                 Log.d("User was clicked ", " " + msgAdpt.getItem(position).toString());
             }
         });
