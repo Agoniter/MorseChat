@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -58,9 +59,14 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                         Log.d("slct", c.getUsername());
                     }
                 }
-                Intent intent = new Intent(Friends.this,MorseActivity.class);
-                intent.putExtra("selected", selected);
-                startActivity(intent);
+                if(!selected.isEmpty()) {
+                    Intent intent = new Intent(Friends.this, MorseActivity.class);
+                    intent.putExtra("selected", selected);
+                    startActivity(intent);
+                }else {
+                    Toast toast = Toast.makeText(Friends.this, "Please select one or more users before proceeding", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
 
@@ -82,6 +88,11 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.action_logout:
+                Intent logoutIntent = new Intent(Friends.this,LoginActivity.class);
+                UserSingleton.getInstance().clearMe();
+                startActivity(logoutIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

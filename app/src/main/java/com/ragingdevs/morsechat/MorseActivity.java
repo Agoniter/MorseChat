@@ -163,6 +163,11 @@ public class MorseActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_logout:
+                Intent logoutIntent = new Intent(MorseActivity.this,LoginActivity.class);
+                UserSingleton.getInstance().clearMe();
+                startActivity(logoutIntent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
