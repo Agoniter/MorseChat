@@ -38,4 +38,9 @@ public class MessageAdapter extends ArrayAdapter {
 
         return convertView;
     }
+
+    @Override
+    public int getCount(){
+        return UserSingleton.getInstance().getMessages().size();
+    }
 }
