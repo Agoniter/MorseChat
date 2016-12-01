@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -65,16 +66,24 @@ public class MainActivity extends AppCompatActivity {
            // messageLV = (ListView) findViewById(R.id.msglv);
            // messageLV.setAdapter(msgAdpt);
         }
+        messageLV = (ListView) findViewById(R.id.msglv);
         serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
        // ListView messageLV = (ListView) findViewById(R.id.msglv);
        // messageLV.setAdapter(msgAdpt);
+        messageLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Message mesg = (Message) msgAdpt.getItem(position);
+                mesg.play(MainActivity.this);
+                Log.d("User was clicked ", " " + msgAdpt.getItem(position).toString());
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent friendsListIntent = new Intent(MainActivity.this, Friends.class);
                 startActivity(friendsListIntent);
 
@@ -155,8 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 UserSingleton.getInstance().setMessages(msgs);
                 Log.d("notifyMsgAdpt", "Notifying dataset changed");
-                    msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
-                messageLV = (ListView) findViewById(R.id.msglv);
+                msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
                 messageLV.setAdapter(msgAdpt);
                 msgAdpt.notifyDataSetChanged();
                 Log.d("msgAdpt", "count: " + msgAdpt.getCount());
