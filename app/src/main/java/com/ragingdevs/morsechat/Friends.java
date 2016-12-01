@@ -71,12 +71,25 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
         });
 
         final EditText searchFriend = (EditText) findViewById(R.id.search_friend);
-        Button addFriendButton = (Button) findViewById(R.id.add_friend_button);
-        addFriendButton.setOnClickListener(new View.OnClickListener() {
+
+        Button clearSearchButton = (Button) findViewById(R.id.clear_search_button);
+        clearSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchFriend.getText().clear();
+                searchList.clear();
+                contactAdapter = new ContactAdapter(Friends.this, UserSingleton.getInstance().getContacts());
+                friendList.setAdapter(contactAdapter);
+                contactAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Button searchFriendButton = (Button) findViewById(R.id.add_friend_button);
+        searchFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String searchString = "";
-                searchString += searchFriend.getText().toString();
+                searchString += searchFriend.getText().toString().toLowerCase();
                 Log.d("sestring", searchString);
                 for(ChatUser c: UserSingleton.getInstance().getContacts() ){
                     if(searchString.equals("") ){
@@ -86,12 +99,12 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                         contactAdapter.notifyDataSetChanged();
                     }
                     else if(searchString.length() > 2 ) {
-                        if (c.getUsername().contains(searchString) && !searchList.contains(c)) {
+                        if (c.getUsername().toLowerCase().contains(searchString) && !searchList.contains(c)) {
                             searchList.add(c);
                         }
                     }
                     else{
-                        Toast searchToast = Toast.makeText(Friends.this, "Please provide 3 or more characters to search", Toast.LENGTH_LONG);
+                        Toast searchToast = Toast.makeText(Friends.this, "Please provide 3 or more characters to search", Toast.LENGTH_SHORT);
                         searchToast.show();
                     }
                 }
