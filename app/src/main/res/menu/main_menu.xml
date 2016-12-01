@@ -10,13 +10,4 @@
         android:orderInCategory="100"
         android:title="Logout"
         app:showAsAction="never" />
-<!--
-        <item
-        android:id="@+id/search_box"
-        android:orderInCategory="300"
-        android:title="Search"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_search">
-    </item>
--->
 </menu>
