@@ -165,7 +165,7 @@ public class MorseActivity extends AppCompatActivity {
                 return true;
             case R.id.action_logout:
                 Intent logoutIntent = new Intent(MorseActivity.this,LoginActivity.class);
-                UserSingleton.getInstance().clearMe();
+                UserSingleton.getInstance().clearMe(MorseActivity.this);
                 startActivity(logoutIntent);
                 return true;
         }
