@@ -64,6 +64,14 @@ public class MorseActivity extends AppCompatActivity {
         TextView selectedFriends = (TextView) findViewById(R.id.selected_friends_view);
         selectedFriends.setText(getRecipientString());
 
+        Button clearMessageButton = (Button) findViewById(R.id.clear_message);
+        clearMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                morseMessage.clear();
+            }
+        });
+
         Button mMorseButton = (Button) findViewById(R.id.morse_button);
         mMorseButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
