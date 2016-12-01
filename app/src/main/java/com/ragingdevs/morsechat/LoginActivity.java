@@ -18,9 +18,13 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
+
+import com.ragingdevs.utils.*;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,66 +76,77 @@ public class LoginActivity extends AppCompatActivity {
      * Checks if the fields are filled in and then tries to login
      */
     private void loginCheck() {
+            String user = mUser.getText().toString();
+            String password = mPassword.getText().toString();
 
-        String user = mUser.getText().toString();
-        String password = mPassword.getText().toString();
+            View focusView = null;
+            boolean error = false;
 
-        View focusView = null;
-        boolean error = false;
-
-        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
-            mPassword.setError(getString(R.string.error_incorrect_password));
-            focusView = mPassword;
-            error = true;
-        }
-
+            if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+                mPassword.setError(getString(R.string.error_incorrect_password));
+                focusView = mPassword;
+                error = true;
+            }
 
 
-        if (TextUtils.isEmpty(user)) {
-            mUser.setError(getString(R.string.error_field_required));
-            focusView = mUser;
-            error = true;
-        }
+            if (TextUtils.isEmpty(user)) {
+                mUser.setError(getString(R.string.error_field_required));
+                focusView = mUser;
+                error = true;
+            }
 
-        if (error) {
-            focusView.requestFocus();
-        } else {
-            RequestParams params = new RequestParams();
-            params.put("username", user);
-            params.put("password", password);
-            serverCom.post("user/login", params, new JsonHttpResponseHandler(
-            ){
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    try {
-                       // UserSingleton.getInstance().clearMe();
-                        String username = response.getString("username");
-                        String token = response.getString("token");
-                        Long id = response.getLong("id");
-                        ChatUser owner = new ChatUser(id,username);
-                        owner.setToken(token);
-                        UserSingleton.getInstance().setUser(owner);
-                        serverCom.setAuthHead(token);
-                        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(mainActivityIntent);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        //Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
-                        //toast.show();
+            if (error) {
+                focusView.requestFocus();
+            } else {
+                RequestParams params = new RequestParams();
+                params.put("username", user);
+                params.put("password", password);
+                serverCom.post("user/login", params, new JsonHttpResponseHandler(
+                ) {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        try {
+                            // UserSingleton.getInstance().clearMe();
+
+                            String username = response.getString("username");
+                            String token = response.getString("token");
+                            Long id = response.getLong("id");
+                            ChatUser owner = new ChatUser(id, username);
+                            owner.setToken(token);
+
+                            FileHandler fh = new FileHandler();
+                            try {
+                                fh.writeToFile(token, "token.txt", LoginActivity.this);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            UserSingleton.getInstance().setUser(owner);
+                            serverCom.setAuthHead(token);
+                            Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(mainActivityIntent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            //Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
+                            //toast.show();
+                        }
+
                     }
 
-                }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String benis, Throwable error) {
+                        Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers,String benis, Throwable error){
-                    Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
-                    toast.show();
-                }
+                });
 
-            });
+            }
 
-        }
     }
+
+
+
 
     /**
      * Checks if email input contains @

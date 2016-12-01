@@ -1,8 +1,16 @@
 package com.ragingdevs.morsechat;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.ragingdevs.utils.FileHandler;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by hallv on 29.11.2016.
@@ -28,7 +36,8 @@ public class UserSingleton {
         return mInstance;
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn(Context context){
+
         if(user != null) {
             if (user.getToken().equals("")) {
                 return false;
@@ -62,9 +71,29 @@ public class UserSingleton {
         this.messages = messages;
     }
 
-    public void clearMe(){
+    public void clearMe(Context context){
         messages = new ArrayList<>();
         user = null;
         contactList = new ArrayList<>();
+        FileHandler fh = new FileHandler();
+        try {
+            fh.writeToFile("", "token.txt", context);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String doTokenCheck(Context context){
+        FileHandler fh = new FileHandler();
+        ServerCom sc = new  ServerCom();
+        String token = "";
+        try {
+            token = fh.readFromFile(context, "token.txt");
+        } catch (IOException e) {
+            return "";
+        }
+
+        sc.setAuthHead(token);
+        return token;
     }
 }
