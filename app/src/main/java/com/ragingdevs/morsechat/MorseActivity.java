@@ -113,10 +113,9 @@ public class MorseActivity extends AppCompatActivity {
                     serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast toast = Toast.makeText(MorseActivity.this, "Message", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(MorseActivity.this, "Message sent to", Toast.LENGTH_LONG);
                             toast.show();
                             morseMessage.clear();
-
                         }
 
                         @Override
