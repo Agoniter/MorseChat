@@ -62,8 +62,6 @@ public class MorseActivity extends AppCompatActivity {
         TextView selectedFriennds = (TextView) findViewById(R.id.selected_friends_view);
         Intent intent = getIntent();
         listOfRecipients = (ArrayList) intent.getExtras().getSerializable("selected");
-        Log.d("Liståå ", listOfRecipients.toString());
-        Log.d("Liståå 2: the listening", getRecipients(listOfRecipients).toString());
 
         selectedFriennds.setText(getRecipients(listOfRecipients).toString());
 

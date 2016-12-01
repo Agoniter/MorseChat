@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                 msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
                 messageLV.setAdapter(msgAdpt);
                 msgAdpt.notifyDataSetChanged();
-                Log.d("msgAdpt", "count: " + msgAdpt.getCount());
             }
         }
         );

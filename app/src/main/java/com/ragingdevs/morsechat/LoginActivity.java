@@ -99,14 +99,12 @@ public class LoginActivity extends AppCompatActivity {
             RequestParams params = new RequestParams();
             params.put("username", user);
             params.put("password", password);
-            Log.d("loginparams", params.toString());
             serverCom.post("user/login", params, new JsonHttpResponseHandler(
             ){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {
                        // UserSingleton.getInstance().clearMe();
-                        Log.d("login", response.toString());
                         String username = response.getString("username");
                         String token = response.getString("token");
                         Long id = response.getLong("id");

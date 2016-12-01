@@ -20,7 +20,6 @@ public class MessageAdapter extends ArrayAdapter {
 
     public MessageAdapter(Context context, ArrayList<Message> messages) {
         super(context, 0, messages);
-        Log.d("MsgAdpt", messages.toString());
     }
 
     @Override
@@ -32,7 +31,6 @@ public class MessageAdapter extends ArrayAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message, parent, false);
         }
         ChatUser mTextContext = message.getSender();
-        Log.d("mesgadp sender", mTextContext.getUsername());
         TextView contact = (TextView) convertView.findViewById(R.id.contact);
         contact.setText(mTextContext.getUsername());
 
