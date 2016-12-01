@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Message mesg = (Message) msgAdpt.getItem(position);
                 mesg.play(MainActivity.this);
+                removeMessage(mesg.getId());
                 Log.d("User was clicked ", " " + msgAdpt.getItem(position).toString());
             }
         });
@@ -137,11 +139,10 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Message> msgs = new ArrayList<Message>();
                 Gson gson = new Gson();
                 for(int i=0; i< response.length(); i++){
-                    try {
+                    try {;
                         JSONObject obj = response.getJSONObject(i);
                         Long senderid = obj.getLong("sender");
-                        Log.d("sndr", "" + senderid);
-                        Log.d("cntcs", "" + UserSingleton.getInstance().getUser().getId());
+                        Long messageid = obj.getLong("id");
                         ChatUser sender = null;
                         for(ChatUser c : UserSingleton.getInstance().getContacts()){
                                     if(c.getId() == senderid) {
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         mMessage.addAll(msg);
                         Log.d("msg: ", msg.toString());
                      if(sender != null) {
-                         msgs.add(new Message(mMessage, UserSingleton.getInstance().getUser(), sender));
+                         msgs.add(new Message(mMessage, UserSingleton.getInstance().getUser(), sender, messageid));
                      }
 
                     } catch (JSONException e) {
@@ -187,6 +188,30 @@ public class MainActivity extends AppCompatActivity {
                     usrs.add(new ChatUser(c.id,c.username));
                 }
                 UserSingleton.getInstance().setChatUsers(usrs);
+            }
+        });
+    }
+    public void removeMessage(Long id){
+        RequestParams params = new RequestParams();
+        params.put("messageid", id);
+        Log.d("msgDel", "Try: " + id);
+        serverCom.delete("message/delete", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                retrieveMessages();
+                String resp = "";
+                try {
+                    resp += new String(responseBody,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                Log.d("msgDel", "Success: " + resp);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                error.printStackTrace();
+                Log.d("msgDel", "Fail");
             }
         });
     }

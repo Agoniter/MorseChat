@@ -36,4 +36,8 @@ public class ServerCom {
     public void setAuthHead(String token){
         client.addHeader("Authorization",token);
     }
+
+    public static  void delete(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.delete(getAbsoluteUrl(url), params, responseHandler);
+    }
 }

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -114,6 +115,8 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String response = new String(responseBody, StandardCharsets.UTF_8);
                     Log.d("success", "signup success:" + response);
+                    Toast toast = Toast.makeText(SignUpActivity.this, "Signup successful!", Toast.LENGTH_LONG);
+                    toast.show();
                 }
 
                 @Override
