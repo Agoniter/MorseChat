@@ -68,7 +68,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                     friendList.requestLayout();
                     startActivity(intent);
                 }else {
-                    Toast toast = Toast.makeText(Friends.this, "Please select one or more users before proceeding", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(Friends.this, "Please select one or more users before proceeding", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }

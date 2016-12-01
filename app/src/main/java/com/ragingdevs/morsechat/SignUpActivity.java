@@ -115,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String response = new String(responseBody, StandardCharsets.UTF_8);
                     Log.d("success", "signup success:" + response);
-                    Toast toast = Toast.makeText(SignUpActivity.this, "Signup successful!", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(SignUpActivity.this, "Signup successful!", Toast.LENGTH_SHORT);
                     toast.show();
                     Intent loginIntent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -126,11 +126,11 @@ public class SignUpActivity extends AppCompatActivity {
                     error.printStackTrace();
                     switch (statusCode){
                         case 406:
-                            Toast case406 = Toast.makeText(SignUpActivity.this, "Username is already taken please, chose another one", Toast.LENGTH_LONG);
+                            Toast case406 = Toast.makeText(SignUpActivity.this, "Username is already taken please, chose another one", Toast.LENGTH_SHORT);
                             case406.show();
                             break;
                         case 503:
-                            Toast case503 = Toast.makeText(SignUpActivity.this, "Server unavailable, please try later", Toast.LENGTH_LONG);
+                            Toast case503 = Toast.makeText(SignUpActivity.this, "Server unavailable, please try later", Toast.LENGTH_SHORT);
                             case503.show();
                     }
                 }

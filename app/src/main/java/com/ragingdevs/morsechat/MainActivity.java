@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent friendsListIntent = new Intent(MainActivity.this, Friends.class);
-                getUsers();
+                //getUsers();
                 startActivity(friendsListIntent);
             }
         });
@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if(msgAdpt != null){
             retrieveMessages();
-            // getUsers();
             msgAdpt.notifyDataSetChanged();
         }
 
@@ -242,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                         retrieveMessages();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        //Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
+                        //Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_SHORT);
                         //toast.show();
                     }
 

@@ -88,7 +88,7 @@ public class MorseActivity extends AppCompatActivity {
 
                     // For testing
                     //String tmpLastDown = String.valueOf(lastUpDuration);
-                    //Toast.makeText(getApplicationContext(), tmpLastDown, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), tmpLastDown, Toast.LENGTH_SHORT).show();
 
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
@@ -125,20 +125,21 @@ public class MorseActivity extends AppCompatActivity {
                     serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast toast = Toast.makeText(MorseActivity.this, "Message sent to: " + getRecipientString(), Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(MorseActivity.this, "Message sent to: " + getRecipientString(), Toast.LENGTH_SHORT);
                             toast.show();
                             morseMessage.clear();
+                            //Intent sendMessageIntent = new Intent()
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Toast toast = Toast.makeText(MorseActivity.this, "Message not sent, please try again", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(MorseActivity.this, "Message not sent, please try again", Toast.LENGTH_SHORT);
                             toast.show();
                             error.printStackTrace();
                         }
                     });
                 }else{
-                    Toast toast = Toast.makeText(MorseActivity.this, "Please record a message before pressing send", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(MorseActivity.this, "Please record a message before pressing send", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                     // For testing purpose
