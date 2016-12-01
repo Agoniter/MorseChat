@@ -16,10 +16,13 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.ragingdevs.utils.FileHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Check if a user is logged in
-        if (!UserSingleton.getInstance().isLoggedIn()) {
+/*
+        if (!UserSingleton.getInstance().isLoggedIn(MainActivity.this)) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }
@@ -50,9 +53,15 @@ public class MainActivity extends AppCompatActivity {
             getUsers();
             retrieveMessages();
         }
+        */
+        serverCom = new ServerCom();
+        tokenLoginCheck();
+        if(UserSingleton.getInstance().isLoggedIn(MainActivity.this)){
+            getUsers();
+            retrieveMessages();
+        }
 
         messageLV = (ListView) findViewById(R.id.msglv);
-        serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         messageLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if(msgAdpt != null){
             retrieveMessages();
+            // getUsers();
             msgAdpt.notifyDataSetChanged();
         }
 
@@ -92,19 +102,18 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    @Override
-    public void onBackPressed() {
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id){
-            case R.id.action_logout:
-            Intent logoutIntent = new Intent(MainActivity.this,LoginActivity.class);
-            UserSingleton.getInstance().clearMe();
-            startActivity(logoutIntent);
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            UserSingleton.getInstance().clearMe(MainActivity.this);
+            initiateLogin();
             return true;
         }
 
@@ -117,43 +126,43 @@ public class MainActivity extends AppCompatActivity {
         params.put("recipientid", UserSingleton.getInstance().getUser().getId());
         Log.d("thisuserid", "" + UserSingleton.getInstance().getUser().getId() );
         serverCom.get("message/messages",params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                ArrayList<Message> msgs = new ArrayList<Message>();
-                Gson gson = new Gson();
-                for(int i=0; i< response.length(); i++){
-                    try {;
-                        JSONObject obj = response.getJSONObject(i);
-                        Long senderid = obj.getLong("sender");
-                        Long messageid = obj.getLong("id");
-                        ChatUser sender = null;
-                        for(ChatUser c : UserSingleton.getInstance().getContacts()){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        ArrayList<Message> msgs = new ArrayList<Message>();
+                        Gson gson = new Gson();
+                        for(int i=0; i< response.length(); i++){
+                            try {;
+                                JSONObject obj = response.getJSONObject(i);
+                                Long senderid = obj.getLong("sender");
+                                Long messageid = obj.getLong("id");
+                                ChatUser sender = null;
+                                for(ChatUser c : UserSingleton.getInstance().getContacts()){
                                     if(c.getId() == senderid) {
                                         sender = c;
                                     }
+                                }
+
+                                //Log.d("Sender", sender.getUsername());
+                                Long[] message = gson.fromJson(obj.getString("message"),Long[].class);
+                                List<Long>  msg = Arrays.asList(message);
+                                ArrayList<Long> mMessage = new ArrayList<>();
+                                mMessage.addAll(msg);
+                                Log.d("msg: ", msg.toString());
+                                if(sender != null) {
+                                    msgs.add(new Message(mMessage, UserSingleton.getInstance().getUser(), sender, messageid));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
 
-                        //Log.d("Sender", sender.getUsername());
-                        Long[] message = gson.fromJson(obj.getString("message"),Long[].class);
-                        List<Long>  msg = Arrays.asList(message);
-                        ArrayList<Long> mMessage = new ArrayList<>();
-                        mMessage.addAll(msg);
-                        Log.d("msg: ", msg.toString());
-                     if(sender != null) {
-                         msgs.add(new Message(mMessage, UserSingleton.getInstance().getUser(), sender, messageid));
-                     }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        UserSingleton.getInstance().setMessages(msgs);
+                        msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
+                        messageLV.setAdapter(msgAdpt);
+                        msgAdpt.notifyDataSetChanged();
                     }
                 }
-
-                UserSingleton.getInstance().setMessages(msgs);
-                msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
-                messageLV.setAdapter(msgAdpt);
-                msgAdpt.notifyDataSetChanged();
-            }
-        }
         );
     }
 
@@ -200,5 +209,60 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("msgDel", "Fail");
             }
         });
+    }
+
+    public void tokenLoginCheck(){
+        final String token = UserSingleton.getInstance().doTokenCheck(MainActivity.this);
+        if(!token.equals("")) {
+            serverCom.setAuthHead(token);
+            RequestParams params = new RequestParams();
+            params.put("token", token);
+            serverCom.post("user/tokenlogin", params, new JsonHttpResponseHandler(
+            ){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        String username = response.getString("username");
+                        String token = response.getString("token");
+                        Long id = response.getLong("id");
+                        ChatUser owner = new ChatUser(id, username);
+                        owner.setToken(token);
+
+                        FileHandler fh = new FileHandler();
+                        try {
+                            fh.writeToFile(token, "token.txt", MainActivity.this);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        UserSingleton.getInstance().setUser(owner);
+                        serverCom.setAuthHead(token);
+                        getUsers();
+                        retrieveMessages();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        //Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
+                        //toast.show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String benis, Throwable error) {
+                    Log.d("tknLogin", "token login failed: " + token);
+                    error.printStackTrace();
+                    initiateLogin();
+                }
+
+            });
+        }
+        else{
+            initiateLogin();
+        }
+    }
+
+    public void initiateLogin(){
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
     }
 }
