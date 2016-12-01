@@ -32,7 +32,7 @@ public class MessageAdapter extends ArrayAdapter {
         }
         ChatUser mTextContext = message.getSender();
         TextView contact = (TextView) convertView.findViewById(R.id.contact);
-        contact.setText(mTextContext.getUsername());
+        contact.setText("Message from: " + mTextContext.getUsername());
 
         return convertView;
     }
