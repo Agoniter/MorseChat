@@ -42,8 +42,8 @@
 
                 <Button
                     android:id="@+id/clear_search_button"
-                    android:layout_width="65dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/ic_clear_search"
                     android:layout_gravity="right|center_vertical"
 
