@@ -27,27 +27,57 @@
             android:id="@+id/morse_alphabet"
             android:src="@drawable/morse_code" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:id="@+id/morse_button"
+            android:layout_weight="0.67"
+            android:textSize="36sp"
+            android:textStyle="normal|bold"
+            android:textAlignment="center" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
-            android:layout_weight="0.23">
+            android:layout_height="76dp">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+<!--
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/selected_friends_view"
+                    android:scrollbarSize="10dp"/>
+-->
+
+<!--
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+-->
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/selected_friends_view" />
+
+            </HorizontalScrollView>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="130dp"
-                android:id="@+id/morse_button"
-                android:layout_weight="0.71"
-                android:textSize="36sp"
-                android:textStyle="normal|bold"
-                android:textAlignment="center" />
-
+                android:text="send"
+                android:layout_width="103dp"
+                android:layout_height="match_parent"
+                android:id="@+id/send_message_button" />
         </LinearLayout>
 
-        <Button
-            android:text="send"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/send_message_button" />
     </LinearLayout>
 </RelativeLayout>

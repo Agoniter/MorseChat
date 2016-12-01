@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -55,10 +58,16 @@ public class MorseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("MorseChat");
 
+//        ListView selectedFriends = (ListView) findViewById(R.id.selected_friends_view);
+        TextView selectedFriennds = (TextView) findViewById(R.id.selected_friends_view);
         Intent intent = getIntent();
         listOfRecipients = (ArrayList) intent.getExtras().getSerializable("selected");
         Log.d("Liståå ", listOfRecipients.toString());
         Log.d("Liståå 2: the listening", getRecipients(listOfRecipients).toString());
+
+        selectedFriennds.setText(getRecipients(listOfRecipients).toString());
+
+
         Button mMorseButton = (Button) findViewById(R.id.morse_button);
         mMorseButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -142,18 +151,6 @@ public class MorseActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    public ArrayList<String> getRecipients(ArrayList<Long> users ){
-        ArrayList<String> result = new ArrayList<>();
-        for(int i = 0; i<users.size(); i++ ){
-            Long recieverid = users.get(i);
-            for(ChatUser c : UserSingleton.getInstance().getContacts()){
-                 if(c.getId() == recieverid){
-                     result.add(c.getUsername());
-                 }
-            }
-        }
-        return result;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -166,5 +163,23 @@ public class MorseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     *
+     * @param users
+     * @return
+     */
+    public ArrayList<String> getRecipients(ArrayList<Long> users ) {
+        ArrayList<String> result = new ArrayList<>();
+
+        for(int i = 0; i<users.size(); i++ ){
+            Long recieverid = users.get(i);
+            for(ChatUser c : UserSingleton.getInstance().getContacts()){
+                if(c.getId() == recieverid){
+                    result.add(c.getUsername());
+                }
+            }
+        }
+        return result;
+    }
 
 }
