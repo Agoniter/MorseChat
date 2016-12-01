@@ -53,7 +53,7 @@ public class MorseActivity extends AppCompatActivity {
         Intent intent = getIntent();
         listOfRecipients = (ArrayList) intent.getExtras().getSerializable("selected");
         Log.d("Liståå ", listOfRecipients.toString());
-
+        Log.d("Liståå 2: the listening", getRecipients(listOfRecipients).toString());
         Button mMorseButton = (Button) findViewById(R.id.morse_button);
         mMorseButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -107,19 +107,23 @@ public class MorseActivity extends AppCompatActivity {
                     StringEntity entity = new StringEntity(json, "UTF-8");
 
                     serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler() {
-
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast.makeText(MorseActivity.this, "Message sent", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(MorseActivity.this, "Message sent to", Toast.LENGTH_LONG);
+                            toast.show();
                             morseMessage.clear();
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Toast.makeText(MorseActivity.this, "Message not sent, please try again", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(MorseActivity.this, "Message not sent, please try again", Toast.LENGTH_LONG);
+                            toast.show();
                             error.printStackTrace();
                         }
                     });
+                }else{
+                    Toast toast = Toast.makeText(MorseActivity.this, "Please record a message before pressing send", Toast.LENGTH_LONG);
+                    toast.show();
                 }
                     // For testing purpose
                 //Log.d("Morse Message", morseMessage.toString());
@@ -134,6 +138,17 @@ public class MorseActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+    public ArrayList<String> getRecipients(ArrayList<Long> users ){
+        ArrayList<String> result = new ArrayList<>();
+        for(int i = 0; i<users.size(); i++ ){
+            Long recieverid = users.get(i);
+            for(ChatUser c : UserSingleton.getInstance().getContacts()){
+                 if(c.getId() == recieverid){
+                     result.add(c.getUsername());
+                 }
+            }
+        }
+        return result;
+    }
 
 }
