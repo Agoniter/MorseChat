@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -117,8 +118,16 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(mainActivityIntent);
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        //Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
+                        //toast.show();
                     }
 
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers,String benis, Throwable error){
+                    Toast toast = Toast.makeText(LoginActivity.this, "Password or username is wrong, please try again", Toast.LENGTH_LONG);
+                    toast.show();
                 }
 
             });
