@@ -57,12 +57,15 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                     if (c.isSelected()){
                         selected.add(c.getId());
                         c.setSelected(false);
-                        Log.d("slct", c.getUsername());
+                        friendList.clearChoices();
+                        friendList.requestLayout();
                     }
                 }
                 if(!selected.isEmpty()) {
                     Intent intent = new Intent(Friends.this, MorseActivity.class);
                     intent.putExtra("selected", selected);
+                    friendList.clearChoices();
+                    friendList.requestLayout();
                     startActivity(intent);
                 }else {
                     Toast toast = Toast.makeText(Friends.this, "Please select one or more users before proceeding", Toast.LENGTH_LONG);
