@@ -35,8 +35,8 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
 
         final ListView friendList = (ListView) findViewById(R.id.friendlist);
         contactAdapter = new ContactAdapter(this, UserSingleton.getInstance().getContacts());
+        final ArrayList<ChatUser> searchList = new ArrayList<>();
         friendList.setAdapter(contactAdapter);
-
         friendList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         friendList.setItemsCanFocus(false);
 
@@ -75,13 +75,35 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 29.11.2016 search friend -> add to list
-
-
+                String searchString = "";
+                searchString += searchFriend.getText().toString();
+                Log.d("sestring", searchString);
+                for(ChatUser c: UserSingleton.getInstance().getContacts() ){
+                    if(searchString.equals("") ){
+                        searchList.clear();
+                        contactAdapter = new ContactAdapter(Friends.this, UserSingleton.getInstance().getContacts());
+                        friendList.setAdapter(contactAdapter);
+                        contactAdapter.notifyDataSetChanged();
+                    }
+                    else if(searchString.length() > 2 ) {
+                        if (c.getUsername().contains(searchString) && !searchList.contains(c)) {
+                            searchList.add(c);
+                        }
+                    }
+                    else{
+                        Toast searchToast = Toast.makeText(Friends.this, "Please provide 3 or more characters to search", Toast.LENGTH_LONG);
+                        searchToast.show();
+                    }
+                }
+                if (!searchList.isEmpty()){
+                    contactAdapter = new ContactAdapter(Friends.this, searchList);
+                    friendList.setAdapter(contactAdapter);
+                    contactAdapter.notifyDataSetChanged();
+                }
             }
         });
-
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
