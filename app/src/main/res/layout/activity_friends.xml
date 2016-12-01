@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="627dp"
         android:layout_alignParentBottom="true">
 
@@ -25,20 +25,22 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="90dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:weightSum="1">
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:layout_weight="0.91">
 
                 <EditText
                     android:id="@+id/search_friend"
-                    android:layout_width="290dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:textSize="20dp"
-                    tools:text="@string/prompt_search_friend" />
+                    tools:hint="@string/prompt_search_friend" />
 
                 <Button
                     android:id="@+id/clear_search_button"
