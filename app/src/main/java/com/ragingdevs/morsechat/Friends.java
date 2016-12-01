@@ -90,10 +90,10 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
             public void onClick(View view) {
                 String searchString = "";
                 searchString += searchFriend.getText().toString().toLowerCase();
+                searchList.clear();
                 Log.d("sestring", searchString);
                 for(ChatUser c: UserSingleton.getInstance().getContacts() ){
                     if(searchString.equals("") ){
-                        searchList.clear();
                         contactAdapter = new ContactAdapter(Friends.this, UserSingleton.getInstance().getContacts());
                         friendList.setAdapter(contactAdapter);
                         contactAdapter.notifyDataSetChanged();
