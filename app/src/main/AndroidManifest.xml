@@ -34,7 +34,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".MorseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Friends"></activity>
+        <activity android:name=".Friends"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".MessageService"

@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
                 mPassword.setError(getString(R.string.error_incorrect_password));
+                mPassword.getText().clear();
                 focusView = mPassword;
                 error = true;
             }

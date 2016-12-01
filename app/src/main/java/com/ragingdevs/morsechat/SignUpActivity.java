@@ -84,7 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         if (!isUsernameValid(username)) {
-            mUsername.setError(getString(R.string.error_invalid_email));
+            mUsername.setError(getString(R.string.error_invalid_username));
             focusView = mUsername;
             error = true;
         }
