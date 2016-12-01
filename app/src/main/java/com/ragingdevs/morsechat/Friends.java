@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                 for(ChatUser c: UserSingleton.getInstance().getContacts()){
                     if (c.isSelected()){
                         selected.add(c.getId());
+                        Log.d("slct", c.getUsername());
                     }
                 }
                 Intent intent = new Intent(Friends.this,MorseActivity.class);

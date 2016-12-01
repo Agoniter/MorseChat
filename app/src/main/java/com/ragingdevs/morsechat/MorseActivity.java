@@ -58,13 +58,11 @@ public class MorseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("MorseChat");
 
-//        ListView selectedFriends = (ListView) findViewById(R.id.selected_friends_view);
-        TextView selectedFriennds = (TextView) findViewById(R.id.selected_friends_view);
         Intent intent = getIntent();
         listOfRecipients = (ArrayList) intent.getExtras().getSerializable("selected");
 
-        selectedFriennds.setText(getRecipients(listOfRecipients).toString());
-
+        TextView selectedFriends = (TextView) findViewById(R.id.selected_friends_view);
+        selectedFriends.setText(getRecipientString());
 
         Button mMorseButton = (Button) findViewById(R.id.morse_button);
         mMorseButton.setOnTouchListener(new View.OnTouchListener() {
@@ -120,7 +118,7 @@ public class MorseActivity extends AppCompatActivity {
                     serverCom.post(MorseActivity.this, "message/sendmessage", entity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast toast = Toast.makeText(MorseActivity.this, "Message sent to", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(MorseActivity.this, "Message sent to: " + getRecipientString(), Toast.LENGTH_LONG);
                             toast.show();
                             morseMessage.clear();
                         }
@@ -169,15 +167,32 @@ public class MorseActivity extends AppCompatActivity {
     public ArrayList<String> getRecipients(ArrayList<Long> users ) {
         ArrayList<String> result = new ArrayList<>();
 
-        for(int i = 0; i<users.size(); i++ ){
-            Long recieverid = users.get(i);
+        for(Long receiverid : users){
+            Log.d("recipID", "" + receiverid);
             for(ChatUser c : UserSingleton.getInstance().getContacts()){
-                if(c.getId() == recieverid){
+                Log.d("recipIDext", "" + c.getId());
+                if(c.getId().equals(receiverid)){
+                    Log.d("recip",c.getUsername());
                     result.add(c.getUsername());
+                    break;
                 }
+
             }
         }
         return result;
+    }
+
+    public String getRecipientString(){
+        String result = "";
+        ArrayList<String> tmp = getRecipients(listOfRecipients);
+
+        for(String s : tmp){
+            result += s + ", ";
+        }
+        if(result.length() > 2) {
+            return result.substring(0, result.length() - 2);
+        }
+        return "";
     }
 
 }
