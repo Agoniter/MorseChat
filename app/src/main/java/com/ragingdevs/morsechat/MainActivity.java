@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 Message mesg = (Message) msgAdpt.getItem(position);
                 mesg.play(MainActivity.this);
                 removeMessage(mesg.getId());
-                Log.d("User was clicked ", " " + msgAdpt.getItem(position).toString());
             }
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -78,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent friendsListIntent = new Intent(MainActivity.this, Friends.class);
+                getUsers();
                 startActivity(friendsListIntent);
             }
         });
