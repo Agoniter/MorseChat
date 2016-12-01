@@ -2,7 +2,6 @@ package com.ragingdevs.morsechat;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -23,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -139,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 UserSingleton.getInstance().setMessages(msgs);
-                Log.d("notifyMsgAdpt", "Notifying dataset changed");
                 msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
                 messageLV.setAdapter(msgAdpt);
                 msgAdpt.notifyDataSetChanged();
@@ -156,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response){
                 Gson gson = new Gson();
-                Log.d("kos og klemz", response.toString());
                 UserTrans[] result = gson.fromJson(response.toString(), UserTrans[].class);
                 ArrayList<ChatUser> usrs = new ArrayList<>();
                 for(UserTrans c: result){
