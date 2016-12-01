@@ -47,32 +47,13 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            //TEST TEST TEST
-           /* ArrayList<Message> testMsgs = new ArrayList<>();
-            ArrayList<Long> testMsg = new ArrayList<>();
-            testMsg.add(200L);
-            testMsg.add(100L);
-            testMsg.add(100L);
-            testMsg.add(100L);
-            testMsg.add(200L);
-
-            testMsgs.add(new Message(testMsg, UserSingleton.getInstance().getUser(), UserSingleton.getInstance().getUser()));
-            testMsgs.add(new Message(testMsg, UserSingleton.getInstance().getUser(), UserSingleton.getInstance().getUser()));
-            testMsgs.add(new Message(testMsg, UserSingleton.getInstance().getUser(), UserSingleton.getInstance().getUser()));*/
-            //TEST TEST TEST
-
-            //msgAdpt = new MessageAdapter(this, UserSingleton.getInstance().getMessages());
             getUsers();
             retrieveMessages();
-           // messageLV = (ListView) findViewById(R.id.msglv);
-           // messageLV.setAdapter(msgAdpt);
         }
         messageLV = (ListView) findViewById(R.id.msglv);
         serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       // ListView messageLV = (ListView) findViewById(R.id.msglv);
-       // messageLV.setAdapter(msgAdpt);
         messageLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,12 +69,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent friendsListIntent = new Intent(MainActivity.this, Friends.class);
                 startActivity(friendsListIntent);
-
-                // for testing purpose
-                //Intent morseIntent = new Intent(MainActivity.this, MorseActivity.class);
-                //startActivity(morseIntent);
-
-                // TODO: Go to contact list
             }
         });
     }
