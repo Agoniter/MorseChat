@@ -30,6 +30,7 @@ public class MessageService extends Service {
                         while(live.get()) {
                            //Check for new message code goes here
 
+
                             try {
                                 Thread.sleep(5000); // Sleep 5 sec.
                             } catch (InterruptedException e) {
