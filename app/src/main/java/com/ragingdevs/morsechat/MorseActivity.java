@@ -95,7 +95,6 @@ public class MorseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!morseMessage.isEmpty()) {
-                    morseMessage.remove(0);
                     // TODO: Send list
                     RequestParams params = new RequestParams();
                     Gson gson = new Gson();
