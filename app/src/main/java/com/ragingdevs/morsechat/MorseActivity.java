@@ -114,7 +114,6 @@ public class MorseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!morseMessage.isEmpty()) {
                     // TODO: Send list
-                    RequestParams params = new RequestParams();
                     Gson gson = new Gson();
                     MessageContainer msgCont = new MessageContainer();
                     msgCont.setMessage(morseMessage);

@@ -93,7 +93,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                 searchList.clear();
                 Log.d("sestring", searchString);
                 for(ChatUser c: UserSingleton.getInstance().getContacts() ){
-                    if(searchString.equals("") ){
+                    if(searchString.equals("")){
                         contactAdapter = new ContactAdapter(Friends.this, UserSingleton.getInstance().getContacts());
                         friendList.setAdapter(contactAdapter);
                         contactAdapter.notifyDataSetChanged();
