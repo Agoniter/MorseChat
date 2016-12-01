@@ -48,11 +48,10 @@ public class Message implements Serializable {
 
     public void play(Context context){
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        Long[] tmp = (Long[])message.toArray();
         long[] pattern = new long[message.size()];
 
         for (int i = 0; i < message.size();i++){
-            pattern[i] = tmp[i];
+            pattern[i] = message.get(i);
         }
         v.vibrate(pattern, -1);
     }
