@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 retrieveMessages();
+                getUsers();
             }
         });
 

@@ -128,7 +128,8 @@ public class MorseActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(MorseActivity.this, "Message sent to: " + getRecipientString(), Toast.LENGTH_SHORT);
                             toast.show();
                             morseMessage.clear();
-                            //Intent sendMessageIntent = new Intent()
+                            Intent sendMessageIntent = new Intent(MorseActivity.this, MainActivity.class);
+                            startActivity(sendMessageIntent);
                         }
 
                         @Override
