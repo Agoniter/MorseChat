@@ -33,10 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private ServerCom serverCom;
     private MessageAdapter msgAdpt;
     ListView messageLV;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Check if a user is logged in
         if (!UserSingleton.getInstance().isLoggedIn()) {
             Intent loginIntent = new Intent(this, LoginActivity.class);
@@ -47,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
             getUsers();
             retrieveMessages();
         }
+
         messageLV = (ListView) findViewById(R.id.msglv);
         serverCom = new ServerCom();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         messageLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Message mesg = (Message) msgAdpt.getItem(position);
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Intent friendsListIntent = new Intent(MainActivity.this, Friends.class);
@@ -101,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
     private void retrieveMessages(){
         RequestParams params = new RequestParams();
         params.put("recipientid", UserSingleton.getInstance().getUser().getId());
@@ -121,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                                         sender = c;
                                     }
                         }
+
                         //Log.d("Sender", sender.getUsername());
                         Long[] message = gson.fromJson(obj.getString("message"),Long[].class);
                         List<Long>  msg = Arrays.asList(message);
@@ -135,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 UserSingleton.getInstance().setMessages(msgs);
                 msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
                 messageLV.setAdapter(msgAdpt);
@@ -144,6 +154,8 @@ public class MainActivity extends AppCompatActivity {
         }
         );
     }
+
+
     private void getUsers(){
         RequestParams params = new RequestParams();
         params.put("userid", UserSingleton.getInstance().getUser().getId());
@@ -161,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     public void removeMessage(Long id){
         RequestParams params = new RequestParams();
         params.put("messageid", id);
