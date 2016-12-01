@@ -126,7 +126,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                 return true;
             case R.id.action_logout:
                 Intent logoutIntent = new Intent(Friends.this,LoginActivity.class);
-                UserSingleton.getInstance().clearMe();
+                UserSingleton.getInstance().clearMe(Friends.this);
                 startActivity(logoutIntent);
                 return true;
         }
