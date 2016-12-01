@@ -10,19 +10,20 @@
 
     <include layout="@layout/toolbar"/>
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/message_list"
+        android:layout_height="638dp"
+        android:id="@+id/swiperefresh"
         android:paddingTop="@dimen/toolbar_margin">
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="555dp"
+            android:layout_height="554dp"
             android:id="@+id/msglv"/>
 
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

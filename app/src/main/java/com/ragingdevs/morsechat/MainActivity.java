@@ -2,6 +2,7 @@ package com.ragingdevs.morsechat;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,24 +37,21 @@ public class MainActivity extends AppCompatActivity {
     private ServerCom serverCom;
     private MessageAdapter msgAdpt;
     ListView messageLV;
-
+    private SwipeRefreshLayout messageRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Check if a user is logged in
-/*
-        if (!UserSingleton.getInstance().isLoggedIn(MainActivity.this)) {
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            startActivity(loginIntent);
-        }
-        else
-        {
-            getUsers();
-            retrieveMessages();
-        }
-        */
+
+        messageRefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        messageRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                retrieveMessages();
+            }
+        });
+
         serverCom = new ServerCom();
         tokenLoginCheck();
         if(UserSingleton.getInstance().isLoggedIn(MainActivity.this)){
@@ -163,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                         msgAdpt = new MessageAdapter(MainActivity.this, UserSingleton.getInstance().getMessages());
                         messageLV.setAdapter(msgAdpt);
                         msgAdpt.notifyDataSetChanged();
+                        messageRefresh.setRefreshing(false);
                     }
                 }
         );
