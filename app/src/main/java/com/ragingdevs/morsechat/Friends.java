@@ -56,6 +56,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
                 for(ChatUser c: UserSingleton.getInstance().getContacts()){
                     if (c.isSelected()){
                         selected.add(c.getId());
+                        c.setSelected(false);
                         Log.d("slct", c.getUsername());
                     }
                 }
