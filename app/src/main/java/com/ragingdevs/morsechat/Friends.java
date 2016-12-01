@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,7 +29,7 @@ public class Friends extends AppCompatActivity implements AdapterView.OnItemSele
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle("Send To");
+        setTitle("Friends");
 
         final ListView friendList = (ListView) findViewById(R.id.friendlist);
         contactAdapter = new ContactAdapter(this, UserSingleton.getInstance().getContacts());
